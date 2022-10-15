@@ -2,36 +2,34 @@ from django.db import models
 from jsonfield import JSONField
 # Create your models here.
 
+class measurement(models.Model):
+    name = models.CharField(max_length=25)
 
-class measure(models.Model):
-    calc = models.FloatField(default=0)
+    def __str__(self):
+        return self.name
+
 
 class material(models.Model):
     name = models.CharField(max_length=50)
-    current_value = models.FloatField(default=0)
+    current_value_instorage = models.FloatField(default=0)
     current_price = models.FloatField(default=0)
-
-    def str(self):
+    total_value = models.FloatField(default=0)
+    def __str__(self):
         return self.name
+
 
 class kala(models.Model):
+
     name = models.CharField(max_length=50)
-    current_value = models.FloatField(default=0)
+    current_value_instorage = models.FloatField(default=0)
     current_price = models.FloatField(default=0)
-    last_sell_price = models.FloatField(default=0)
-    ingredients = models.ManyToManyField("material")
-    share = models.ManyToManyField("measure")
+    total_value = models.FloatField(default=0)
+    price_per_unit = models.FloatField()
     materials = JSONField()
 
-    def str(self):
+    def __str__(self):
         return self.name
 
-
-class calc(models.Model):
-    class type(models.TextChoices):
-        doone = "doone"
-        geram = "geram" 
-    element = models.ForeignKey(material,on_delete=models.CASCADE)
-    typee = models.CharField(max_length=10,choices=type.choices,default=type.geram)
-    value = models.FloatField(default=0,blank=True)
-    name = models.CharField(max_length=10)
+class cart(models.Model):
+    item = models.ForeignKey(material, on_delete=models.CASCADE)
+    impact = models.FloatField(default=0)
