@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}
+افزودن آیتم به سبد
+{% endblock title %}
+{% block body %}
+    <form method="POST">
+    {% csrf_token %}
+    {{cf}}
+    <p id="ca"></p>
+    <p id="lbp"></p>
+    <p id="lsp"></p>
+    <hr>
+    <button type='submit'>Submit this item and add another item</button>
+  </form>
+  <hr>
+  <a href="http://127.0.0.1:8000/factor/checkcart">
+    <button>adding is finished</button>
+  </a>  
+  <script>
+    document.getElementById("id_item").onchange = function() {myFunction()};
+    function myFunction()
+    {
+      newD = {}
+      newD2 = {}
+      newD3 = {}
+
+      {% for k,v in a.items %}
+      newD[ {{k}} ] = {{v}} ;
+      {% endfor %}
+
+      {% for k,v in b.items %}
+      newD2[ {{k}} ] = {{v}} ;
+      {% endfor %}
+
+      {% for k,v in c.items %}
+      newD3[ {{k}} ] = {{v}} ;
+      {% endfor %}
+      var x = document.getElementById("id_item").value;
+      document.getElementById("ca").innerHTML = "Current Amount of The selected Item is : " + newD[x] ;
+      document.getElementById("lbp").innerHTML = "Last Bought Price of The selected Item is : " + newD2[x] ;
+      document.getElementById("lsp").innerHTML = "Last Sold Price of The selected Item is : " + newD3[x] ;
+    }
+    </script>
+{% endblock body %}
