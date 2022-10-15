@@ -53,7 +53,7 @@ class CartView(View):
             })
 
     def post(self,request):
-        cf = cartForm(request.POST)
-        if cf.is_valid():
-            cf.save()
-        return render(request,"product/create.html",{"cf":cf})
+        form = materialForm()(request.POST)
+        if form.is_valid():
+            form.save()
+        return render(request,"product/create.html",{"form":form})
