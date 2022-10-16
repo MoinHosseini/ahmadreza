@@ -31,5 +31,8 @@ class kala(models.Model):
         return self.name
 
 class cart(models.Model):
-    item = models.ForeignKey(material, on_delete=models.CASCADE)
+    element = models.ForeignKey(material, on_delete=models.CASCADE)
     impact = models.FloatField(default=0)
+
+    def __str__(self):
+        return self.element.name
