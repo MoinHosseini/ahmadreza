@@ -14,6 +14,7 @@ class material(models.Model):
     current_value_instorage = models.FloatField(default=0)
     current_price = models.FloatField(default=0)
     total_value = models.FloatField(default=0)
+    
     def __str__(self):
         return self.name
 
