@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+گزارش
+{% endblock title %}
+{% block body %}
+<h3>Total Value of materials in storage : {{mtv}} Toman</h3>
+<hr>
+<div class="container">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>{{col.0}}</th>
+          <th>{{col.1}}</th>
+          <th>{{col.2}}</th>
+          <th>{{col.3}}</th>
+        </tr>
+      </thead>
+    <tbody>
+      {% for item in last %}
+        <tr>
+          <td>{{item.0}}</td>
+          <td>{{item.1}}</td>
+          <td>{{item.2}}</td>
+          <td>{{item.3}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock body %}

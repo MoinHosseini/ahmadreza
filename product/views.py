@@ -8,8 +8,9 @@ from .models import kala,material,cart
 
 def home(request):
     ##### checked
-    content = material.objects.all()
-    return render(request,"homepage.html")
+    kc = kala.objects.all()
+    mc = material.objects.all()
+    return render(request,"homepage.html",{"kala":kc, "material":mc})
 
 
 def all(request,type):
@@ -111,7 +112,6 @@ def edit(request,id):
         form = materialForm(instance=selected)
         return render(request,'change.html',{'form': form})
 
-
 def alter(request,id):
     selected = kala.objects.get(id=id)
     if request.method == 'POST':
@@ -127,8 +127,39 @@ def alter(request,id):
 
 def report(request,id):
     if id == 1:
-        ktv = kala.objects.values_list("total_value")
+        ## for having the total value in storage
+
         mtv = material.objects.values_list("total_value")
+        sum = 0
+        for n in mtv:
+            sum += n[0]
+
+        mname = material.objects.values_list("name")
+        names = []
+        for name in mname:
+            names.append(name[0])
+
+        mvalue = material.objects.values_list("current_value_instorage")
+        values = []
+        for value in mvalue:
+            values.append(value[0])
+
+        mprice = material.objects.values_list("current_price")
+        prices = []
+        for price in mprice:
+            prices.append(price[0])
+        total = []
+        for i,v in enumerate(prices):
+            total.append(v * values[i])
+        last = []
+
+        for index,item in enumerate(names):
+            mytuple = (names[index],prices[index],values[index],total[index])
+            # price(mytuple)
+            last.append(mytuple)
+
+        columns = ["Name","Price","Tedad","Total"]
+        return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
     elif id == 2:
         pass
     elif id == 3:

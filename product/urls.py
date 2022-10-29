@@ -11,5 +11,4 @@ urlpatterns = [
     path("edit/<int:id>/",views.edit),
     path("alter/<int:id>/",views.alter),
     path("report/<int:id>/",views.report),
-
 ]

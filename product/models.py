@@ -2,13 +2,6 @@ from django.db import models
 from jsonfield import JSONField
 # Create your models here.
 
-class measurement(models.Model):
-    name = models.CharField(max_length=25)
-
-    def __str__(self):
-        return self.name
-
-
 class material(models.Model):
     name = models.CharField(max_length=50)
     current_value_instorage = models.FloatField(default=0)

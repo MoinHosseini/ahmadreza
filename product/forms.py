@@ -1,5 +1,5 @@
 from django import forms
-from .models import material,kala,measurement,cart
+from .models import material,kala,cart
 
 class materialForm(forms.ModelForm):
     class Meta:
@@ -13,10 +13,6 @@ class kalaForm(forms.ModelForm):
         fields = '__all__'
         exclude = ('materials','price_per_unit','total_value',)
 
-class measureForm(forms.ModelForm):
-    class Meta:
-        model = measurement
-        fields = '__all__'
 
 class cartForm(forms.ModelForm):
     class Meta:
