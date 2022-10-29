@@ -13,6 +13,7 @@ def all(request):
 class add(View):
     ##### checked
     ## adds material ##
+    
     def get(self,request):
         form = materialForm()
         return render(request,'add.html',{"form":form})
