@@ -12,10 +12,14 @@ def home(request):
     return render(request,"homepage.html")
 
 
-def all(request):
+def all(request,type):
     ##### checked
-    content = material.objects.all()
-    return render(request,"product/all.html",{"content":content})
+    if type == "kala":
+        content = kala.objects.all()
+        return render(request,"product/all.html",{"content":content , "title" : "کالاها" , "type":"alter"})
+    elif type == "material":
+        content = material.objects.all()
+        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })
 
 class add(View):
     ##### checked
@@ -74,6 +78,8 @@ def create(request):
         return render(request, "product/create.html",{"form":form})
 
 def edit(request,id):
+    ### for editting materials
+
     selected = material.objects.get(id=id)
     cp = selected.current_price
     if request.method == 'POST':
@@ -84,7 +90,6 @@ def edit(request,id):
                 np = np - cp
                 data = kala.objects.values_list("materials")
                 names = kala.objects.values_list("name")
-                print(names)
                 final = []
                 for n in names:
                     final.append(n[0])
@@ -98,12 +103,26 @@ def edit(request,id):
                         under_operation_kala.save()
             form.save()
 
-            selected.total_value = selected.current_value_instorage *selected.current_price
+            selected.total_value = selected.current_value_instorage * selected.current_price
             selected.save()
             
             return render(request,"product/all.html")        
     else:
         form = materialForm(instance=selected)
+        return render(request,'change.html',{'form': form})
+
+
+def alter(request,id):
+    selected = kala.objects.get(id=id)
+    if request.method == 'POST':
+        form = kalaForm(request.POST, instance=selected)
+        if form.is_valid():
+            form.save()
+            selected.total_value = selected.current_value_instorage * selected.current_price
+            selected.save()
+            return render(request,"product/all.html")        
+    else:
+        form = kalaForm(instance=selected)
         return render(request,'change.html',{'form': form})
 
 def report(request,id):
