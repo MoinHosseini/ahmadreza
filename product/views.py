@@ -1,8 +1,8 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-from .forms import materialForm,kalaForm,cartForm
-from .models import kala,material,cart
+from .forms import materialForm,kalaForm,cartForm,userForm,factorForm
+from .models import kala,material,cart,fcart
 
 # Create your views here.
 
@@ -12,7 +12,6 @@ def home(request):
     mc = material.objects.all()
     return render(request,"homepage.html",{"kala":kc, "material":mc})
 
-
 def all(request,type):
     ##### checked
     if type == "kala":
@@ -21,6 +20,9 @@ def all(request,type):
     elif type == "material":
         content = material.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })
+    elif type == "cart":
+        content = cart.objects.all()
+        return render(request,"product/all.html",{"content":content , "title" : "سبد" , "type":"remove" , "e":"element" })
 
 class add(View):
     ##### checked
@@ -54,6 +56,34 @@ def checkcart(request):
     ##### checked
     content = cart.objects.all()
     return render(request,"product/check.html",{"content":content})
+
+def remove(request,id):
+    selected = cart.objects.get(id=id)
+    if request.method == 'POST':
+        selected.delete()
+        return HttpResponseRedirect("/home")
+    return render(request,'product/remove.html')
+
+class factor(View):
+    def post(self,request):
+        form = factorForm(request.POST)
+        if form.is_valid():
+            content = fcart.objects.values()
+            ld = {}
+            for item in content:
+                ld[item["element_id"]] = item["price"] * item["tedad"]
+                obj = kala.objects.get(id = item["element_id"])
+                obj.current_value_instorage -= item["tedad"]
+                obj.total_value = obj.current_price * obj.current_value_instorage
+                obj.save()
+            form.instance.content = ld
+            form.save()
+
+    def get(self,request):
+        form = factorForm()
+        content = fcart.objects.all()
+        return render(request,"add.html",{"form":form , "content" : content})
+
 
 def create(request):
     ##### checked
@@ -125,42 +155,33 @@ def alter(request,id):
         form = kalaForm(instance=selected)
         return render(request,'change.html',{'form': form})
 
-def report(request,id):
-    if id == 1:
-        ## for having the total value in storage
+def report(request):
 
-        mtv = material.objects.values_list("total_value")
-        sum = 0
-        for n in mtv:
-            sum += n[0]
-
-        mname = material.objects.values_list("name")
-        names = []
-        for name in mname:
-            names.append(name[0])
-
-        mvalue = material.objects.values_list("current_value_instorage")
-        values = []
-        for value in mvalue:
-            values.append(value[0])
-
-        mprice = material.objects.values_list("current_price")
-        prices = []
-        for price in mprice:
-            prices.append(price[0])
-        total = []
-        for i,v in enumerate(prices):
-            total.append(v * values[i])
-        last = []
-
-        for index,item in enumerate(names):
-            mytuple = (names[index],prices[index],values[index],total[index])
-            # price(mytuple)
-            last.append(mytuple)
-
-        columns = ["Name","Price","Tedad","Total"]
-        return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
-    elif id == 2:
-        pass
-    elif id == 3:
-        pass
+    ## for having the total value of materials in storage
+    
+    mtv = material.objects.values_list("total_value")
+    sum = 0
+    for n in mtv:
+        sum += n[0]
+    mname = material.objects.values_list("name")
+    names = []
+    for name in mname:
+        names.append(name[0])
+    mvalue = material.objects.values_list("current_value_instorage")
+    values = []
+    for value in mvalue:
+        values.append(value[0])
+    mprice = material.objects.values_list("current_price")
+    prices = []
+    for price in mprice:
+        prices.append(price[0])
+    total = []
+    for i,v in enumerate(prices):
+        total.append(v * values[i])
+    last = []
+    for index,item in enumerate(names):
+        mytuple = (names[index],prices[index],values[index],total[index])
+        # price(mytuple)
+        last.append(mytuple)
+    columns = ["Name","Price","Tedad","Total"]
+    return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
