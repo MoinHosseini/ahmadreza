@@ -1,19 +1,23 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
-from .forms import materialForm,kalaForm,cartForm,userForm,factorForm
-from .models import kala,material,cart,fcart
+from .forms import materialForm,kalaForm,cartForm,factorForm,fcartForm
+from .models import kala,material,cart,fcart,factor as fucktor
+
 
 # Create your views here.
 
+
 def home(request):
-    ##### checked
     kc = kala.objects.all()
     mc = material.objects.all()
-    return render(request,"homepage.html",{"kala":kc, "material":mc})
+    # fc = factor.objects.all()
+    return render(request,"homepage.html",
+    {"kala":kc, "material":mc 
+    # ,"factor" : fc
+     })
 
 def all(request,type):
-    ##### checked
     if type == "kala":
         content = kala.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "کالاها" , "type":"alter"})
@@ -23,6 +27,12 @@ def all(request,type):
     elif type == "cart":
         content = cart.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "سبد" , "type":"remove" , "e":"element" })
+    elif type == "factor":
+        content = fucktor.objects.all()
+        return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "e":"element" })
+  
+    # por beshe
+
 
 class add(View):
     ##### checked
@@ -50,40 +60,26 @@ class CartView(View):
         form = cartForm(request.POST)
         if form.is_valid():
             form.save()
-        return render(request,"product/create.html",{"form":form})
+        form = cartForm()
+        return render(request,"product/addtocart.html",{"form":form})
+
 
 def checkcart(request):
     ##### checked
     content = cart.objects.all()
     return render(request,"product/check.html",{"content":content})
 
+### must change to something general
+### for removing every thing
+### by type
+
+
 def remove(request,id):
     selected = cart.objects.get(id=id)
     if request.method == 'POST':
         selected.delete()
-        return HttpResponseRedirect("/home")
-    return render(request,'product/remove.html')
-
-class factor(View):
-    def post(self,request):
-        form = factorForm(request.POST)
-        if form.is_valid():
-            content = fcart.objects.values()
-            ld = {}
-            for item in content:
-                ld[item["element_id"]] = item["price"] * item["tedad"]
-                obj = kala.objects.get(id = item["element_id"])
-                obj.current_value_instorage -= item["tedad"]
-                obj.total_value = obj.current_price * obj.current_value_instorage
-                obj.save()
-            form.instance.content = ld
-            form.save()
-
-    def get(self,request):
-        form = factorForm()
-        content = fcart.objects.all()
-        return render(request,"add.html",{"form":form , "content" : content})
-
+        return HttpResponseRedirect("/")
+    return render(request,'delete.html')
 
 def create(request):
     ##### checked
@@ -103,7 +99,8 @@ def create(request):
             form.instance.price_per_unit = sum
             form.instance.materials = ld
             form.save()
-            return render(request, "product/check.html")
+            cart.objects.all().delete()
+            return render(request, "homepage.html")
     else:
         form = kalaForm()
         return render(request, "product/create.html",{"form":form})
@@ -137,10 +134,11 @@ def edit(request,id):
             selected.total_value = selected.current_value_instorage * selected.current_price
             selected.save()
             
-            return render(request,"product/all.html")        
+            return render(request,"homepage.html")        
     else:
         form = materialForm(instance=selected)
-        return render(request,'change.html',{'form': form})
+        return render(request,'edit.html',{'form': form})
+
 
 def alter(request,id):
     selected = kala.objects.get(id=id)
@@ -150,10 +148,11 @@ def alter(request,id):
             form.save()
             selected.total_value = selected.current_value_instorage * selected.current_price
             selected.save()
-            return render(request,"product/all.html")        
+            return render(request,"homepage.html")        
     else:
         form = kalaForm(instance=selected)
-        return render(request,'change.html',{'form': form})
+        return render(request,'edit.html',{'form': form})
+
 
 def report(request):
 
@@ -183,5 +182,105 @@ def report(request):
         mytuple = (names[index],prices[index],values[index],total[index])
         # price(mytuple)
         last.append(mytuple)
-    columns = ["Name","Price","Tedad","Total"]
+    columns = ["نام","قیمت فی","تعداد","جمع"]
+    return render(request,"report.html",{"mtv":sum, "col":columns,"last":last , "active":True})
+
+def report2(request):
+
+    ## for having the total value of materials in storage
+    
+    mtv = kala.objects.values_list("total_value")
+    sum = 0
+    for n in mtv:
+        sum += n[0]
+    mname = kala.objects.values_list("name")
+    names = []
+    for name in mname:
+        names.append(name[0])
+    mvalue = kala.objects.values_list("price_per_unit")
+    values = []
+    for value in mvalue:
+        values.append(value[0])
+    mprice = kala.objects.values_list("current_price")
+    prices = []
+    for price in mprice:
+        prices.append(price[0])
+    last = []
+    for index,item in enumerate(names):
+        mytuple = (names[index],prices[index],values[index])
+        # price(mytuple)
+        last.append(mytuple)
+    columns = ["نام","قیمت فی","قیمت تمام شده"]
     return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
+
+def factor(request,type):
+    if request.method == "POST":
+        if type == "in":
+            form = factorForm(request.POST)
+            if form.is_valid():
+                content = fcart.objects.values()
+                ld = {}
+                for item in content:
+                    # ld[item["element_id"]] = item["price"] * item["tedad"]
+                    obj = material.objects.get(id = int(item["element_id"]))
+                    obj.current_value_instorage += item["tedad"]
+                    obj.total_value = obj.current_price * obj.current_value_instorage
+                    obj.save()
+                form.instance.content = ld
+                form.save()
+                return render(request,"homepage.html")
+        elif type == "out":
+            form = factorForm(request.POST)
+            if form.is_valid():
+                content = fcart.objects.values()
+                ld = {}
+                for item in content:
+                    # ld[item["element_id"]] = item["price"] * item["tedad"]
+                    obj = material.objects.get(id = int(item["element_id"]))
+                    obj.current_value_instorage -= item["tedad"]
+                    obj.total_value = obj.current_price * obj.current_value_instorage
+                    obj.save()
+                form.instance.content = ld
+                form.save()
+                return render(request,"homepage.html")
+    elif request.method == "GET":
+        form = factorForm()
+        content = fcart.objects.all()
+        return render(request,"add.html",{"form":form , "content" : content})
+
+
+def factoring(request):
+    if request.method=="GET":
+        form = fcartForm()
+        return render(request,"product/factoring.html",{"form":form})
+    else:
+        form = fcartForm(request.POST)
+        if form.is_valid():
+            form.save()
+        form = fcartForm()
+        return render(request,"product/factoring.html",{"form":form})
+
+def checkfactor(request):
+    ##### checked
+    content = fcart.objects.all()
+    return render(request,"product/checkfactor.html",{"content":content})
+
+def removefcart(request,id):
+    selected = fcart.objects.get(id=id)
+    if request.method == 'POST':
+        selected.delete()
+        return HttpResponseRedirect("/")
+    return render(request,'delete.html')
+
+def notif(request):
+    box = []
+    final = []
+    mv = material.objects.values_list("min_value")
+    cv = material.objects.values_list("current_value_instorage")
+    names = material.objects.values_list("name")
+    for name in names:
+        final.append(name[0])
+    for index,item in enumerate(mv):
+        if item >= cv[index]:
+            box.append( str(final[index]) + " --- >" + "  مقدار فعلی = " + str(cv[index][0]) )
+    return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":box})        

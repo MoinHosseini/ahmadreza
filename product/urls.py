@@ -2,15 +2,31 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("home/",views.home,name="home"),
-    path("all/<str:type>",views.all,name="all-products"),
+    path("",views.home,name="home-page"),
+
+    path("all/<str:type>",views.all,name="all"),
+
+    ### the below url is being used for adding new materials to the database
     path("add/",views.add.as_view(),name="add-material"),
+    
     path("addtocart/",views.CartView.as_view() ,name="add-to-cart"),
-    path("check/",views.checkcart,name="check-cart"),
-    path("remove/<int:id>",views.remove,name="remove"),
+
     path("create/",views.create,name="create"),
+
+    path("check/",views.checkcart,name="check-cart"),
+
+    path("remove/<int:id>",views.remove,name="remove"),
     path("edit/<int:id>/",views.edit),
     path("alter/<int:id>/",views.alter),
-    path("report",views.report),
-    path("factor",views.factor.as_view()),
+
+    path("report/material",views.report),
+    
+    path("report/kala",views.report2),
+
+    path("factor/<str:type>",views.factor),
+    path("addtofactor/",views.factoring),
+    path("checkfactor/",views.checkfactor),
+    path("removefcart/<int:id>",views.removefcart),
+
+    path("notif/",views.notif),
 ]

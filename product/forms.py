@@ -1,30 +1,73 @@
 from django import forms
-from .models import material,kala,cart,user,factor
+from .models import material,kala,cart,user,factor,fcart
+
 
 class materialForm(forms.ModelForm):
     class Meta:
         model = material
         fields = '__all__'
         exclude = ('total_value',)
+        labels = {
+        "name": "نام",
+        "current_value_instorage": "مقدار در انبار",
+        "current_price": "قیمت فعلی",
+        "total_value": "جمع ارزش کل در انبار",
+        "min_value" : "کمترین میزان مورد قبول در انبار",
+        "expiration" : "تاریخ انقضا",
+        
+    }
+
 
 class kalaForm(forms.ModelForm):
     class Meta:
         model = kala
         fields = '__all__'
-        exclude = ('materials','price_per_unit','total_value',)
+        exclude = ('materials','total_value',)
+        labels = {
+        "name": "نام",
+        "current_value_instorage": "مقدار در انبار",
+        "current_price": "قیمت فعلی",
+        "total_value": "جمع ارزش کل در انبار",
+        "price_per_unit" : "قیمت تمام شده برای هر واحد",
+        "materials" : "موارد تشکیل دهنده",
+    }
+
 
 class cartForm(forms.ModelForm):
     class Meta:
         model = cart
         fields = '__all__'
+        labels = {
+        "element": "ماده اولیه",
+        "impact": "درصد تاثیر",
+        }
 
 class userForm(forms.ModelForm):
     class Meta:
         model = user
         fields = '__all__'
+        
+        labels = {
+        "nid": "کد کاربری",
+        "phone": "موبایل",
+        "rank": "رده سازمانی",
+        }
 
 class factorForm(forms.ModelForm):
     class Meta:
         model = factor
         fields = '__all__'
         exclude = ('content',)
+        labels = {
+        "user": "ثبت کننده",
+        }
+
+class fcartForm(forms.ModelForm):
+    class Meta:
+        model = fcart
+        fields = '__all__'
+        labels = {
+        "element": "کالا",
+        "tedad": "تعداد",
+        "price": "قیمت",
+        }

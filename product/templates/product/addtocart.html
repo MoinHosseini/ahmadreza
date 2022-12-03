@@ -5,16 +5,18 @@
 {% block body %}
     <form method="POST">
     {% csrf_token %}
+    
     <h3>راهنما:</h3>
     <p>برای ساخت یک محصول کامپلکس، باید از مواد اولیه تعریف شده استفاده شود</p>
     <p>مثلا اگر غذای ما برنج دارد، درصد برنج آن به صورت زیر محاسبه شده و در قسمت **تاثیر** وارد می شود</p>
     <p>مثلا برنج در زمان تعریف غذا، کیلویی 100 تومان است. غذای ما دارای 300 گرم برنج است. حال طبق فرمول بالا، در قسمت تاثیر، عدد 30/100 ک معادل 30درصد است وارد می شود</p>
+    
     {{form}}
     <hr>
     <button type='submit'>Submit this item and add another item</button>
   </form>
   <hr>
-  <a href="http://127.0.0.1:8000/product/check">
+  <a href="http://127.0.0.1:8000/check">
     <button>adding is finished</button>
   </a>
 {% endblock body %}
