@@ -1,4 +1,3 @@
-from unittest.util import _MAX_LENGTH
 from django.db import models
 from jsonfield import JSONField
 # Create your models here.
@@ -9,7 +8,8 @@ class material(models.Model):
     current_price = models.IntegerField(default=0)
     total_value = models.IntegerField(default=0)
     min_value = models.IntegerField(default=0)
-    # expiration = models.DateField()
+    expire_date = models.DateField(blank=True)
+
     def __str__(self):
         return self.name
 
@@ -55,3 +55,4 @@ class fcart(models.Model):
 
     def __str__(self):
         return self.element.name
+

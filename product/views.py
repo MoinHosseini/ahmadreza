@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.views import View
 from .forms import materialForm,kalaForm,cartForm,factorForm,fcartForm
 from .models import kala,material,cart,fcart,factor as fucktor
+import datetime
 
 
 # Create your views here.
@@ -272,15 +273,21 @@ def removefcart(request,id):
         return HttpResponseRedirect("/")
     return render(request,'delete.html')
 
-def notif(request):
-    box = []
-    final = []
-    mv = material.objects.values_list("min_value")
-    cv = material.objects.values_list("current_value_instorage")
-    names = material.objects.values_list("name")
-    for name in names:
-        final.append(name[0])
-    for index,item in enumerate(mv):
-        if item >= cv[index]:
-            box.append( str(final[index]) + " --- >" + "  مقدار فعلی = " + str(cv[index][0]) )
-    return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":box})        
+def notif(request,type):
+    if type == "value":
+        box = []
+        final = []
+        mv = material.objects.values_list("min_value")
+        cv = material.objects.values_list("current_value_instorage")
+        names = material.objects.values_list("name")
+        for name in names:
+            final.append(name[0])
+        for index,item in enumerate(mv):
+            if item >= cv[index]:
+                box.append( str(final[index]) + " --- >" + "  مقدار فعلی = " + str(cv[index][0]) )
+        return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":box})        
+    
+    elif type == "date":
+        current_date = datetime.date.today()
+        list = material.objects.filter(expire_date = current_date)
+        return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":list})

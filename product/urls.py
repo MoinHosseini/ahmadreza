@@ -28,5 +28,5 @@ urlpatterns = [
     path("checkfactor/",views.checkfactor),
     path("removefcart/<int:id>",views.removefcart),
 
-    path("notif/",views.notif),
+    path("notif/<str:type>",views.notif),
 ]

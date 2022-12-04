@@ -1,5 +1,8 @@
 from django import forms
 from .models import material,kala,cart,user,factor,fcart
+from jalali_date.fields import JalaliDateField
+from jalali_date.widgets import AdminJalaliDateWidget
+
 
 
 class materialForm(forms.ModelForm):
@@ -13,9 +16,12 @@ class materialForm(forms.ModelForm):
         "current_price": "قیمت فعلی",
         "total_value": "جمع ارزش کل در انبار",
         "min_value" : "کمترین میزان مورد قبول در انبار",
-        "expiration" : "تاریخ انقضا",
-        
+        "expire_date" : "تاریخ انقضا",   
+
     }
+    def __init__(self, *args, **kwargs):
+        super(materialForm, self).__init__(*args, **kwargs)
+        self.fields['expire_date'] = JalaliDateField( label=('date'), widget=AdminJalaliDateWidget )
 
 
 class kalaForm(forms.ModelForm):
@@ -71,3 +77,14 @@ class fcartForm(forms.ModelForm):
         "tedad": "تعداد",
         "price": "قیمت",
         }
+
+
+# class studentForm(forms.ModelForm):
+#     class Meta:
+#         model = student
+#         fields = '__all__'
+
+#     def __init__(self, *args, **kwargs):
+#         super(studentForm, self).__init__(*args, **kwargs)
+#         self.fields['birthdate'] = JalaliDateField(label=('date'), # date format is  "yyyy-mm-dd"
+#             widget=AdminJalaliDateWidget)

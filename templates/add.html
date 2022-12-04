@@ -1,4 +1,6 @@
 {% extends 'base.html' %}
+{% load jalali_tags %}
+{% load static %}
 {% block title %}
 تعریف یک ماده اولیه
 {% endblock title %}
@@ -9,3 +11,7 @@
   <button type='submit'>Send</button>
 </form>
 {% endblock body %}
+{% block html %}
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+{% endblock html %}
