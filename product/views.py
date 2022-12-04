@@ -24,15 +24,17 @@ def all(request,type):
         return render(request,"product/all.html",{"content":content , "title" : "کالاها" , "type":"alter"})
     elif type == "material":
         content = material.objects.all()
-        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })
+        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })    
     elif type == "cart":
         content = cart.objects.all()
-        return render(request,"product/all.html",{"content":content , "title" : "سبد" , "type":"remove" , "e":"element" })
+        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"remove" })
     elif type == "factor":
         content = fucktor.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "e":"element" })
+    elif type == "fcart":
+        content = fcart.objects.all()
+        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"removefcart" })
   
-    # por beshe
 
 
 class add(View):

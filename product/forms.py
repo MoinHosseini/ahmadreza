@@ -21,7 +21,7 @@ class materialForm(forms.ModelForm):
     }
     def __init__(self, *args, **kwargs):
         super(materialForm, self).__init__(*args, **kwargs)
-        self.fields['expire_date'] = JalaliDateField( label=('date'), widget=AdminJalaliDateWidget )
+        self.fields['expire_date'] = JalaliDateField( label=('تاریخ انقضا'), widget=AdminJalaliDateWidget )
 
 
 class kalaForm(forms.ModelForm):
