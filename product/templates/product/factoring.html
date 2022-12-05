@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 افزودن آیتم به سبد
 {% endblock title %}
 {% block body %}
     <form method="POST">
     {% csrf_token %}
-    
     <h3>راهنما:</h3>
     <p>در اینجا برای اضافه کردن یک کالا به فاکتور، ان کالا را انتخاب و فیلدهای مربوطه را پر کنید</p>
-    {{form}}
+    {{form|crispy}}
     <hr>
     <button type='submit'>ثبت مورد بالا</button>
   </form>
   <hr>
-  <a href="http://127.0.0.1:8000/checkfactor">
+  <a href="/checkfactor">
     <button>مرحله بعد</button>
   </a>
 {% endblock body %}

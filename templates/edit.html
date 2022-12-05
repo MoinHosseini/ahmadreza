@@ -1,11 +1,12 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
-changing section
+ویرایش
 {% endblock title %}
 {% block body %}
 <form method="POST">
   {% csrf_token %}
-    {{form}}
-  <button type='submit'>Send</button>
+    {{form|crispy}}
+  <button type='submit'>ارسال</button>
 </form>
 {% endblock body %}

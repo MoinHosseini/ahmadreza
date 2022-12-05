@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block title %}
 افزودن آیتم به سبد
 {% endblock title %}
@@ -11,12 +12,12 @@
     <p>مثلا اگر غذای ما برنج دارد، درصد برنج آن به صورت زیر محاسبه شده و در قسمت **تاثیر** وارد می شود</p>
     <p>مثلا برنج در زمان تعریف غذا، کیلویی 100 تومان است. غذای ما دارای 300 گرم برنج است. حال طبق فرمول بالا، در قسمت تاثیر، عدد 30/100 ک معادل 30درصد است وارد می شود</p>
     
-    {{form}}
+    {{form|crispy}}
     <hr>
-    <button type='submit'>Submit this item and add another item</button>
+    <button type='submit'>ثبت  مورد بالا</button>
   </form>
   <hr>
-  <a href="http://127.0.0.1:8000/check">
-    <button>adding is finished</button>
+  <a href="/check">
+    <button>مرحله بعد</button>
   </a>
 {% endblock body %}
