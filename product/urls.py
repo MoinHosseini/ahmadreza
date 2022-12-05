@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path("",views.home,name="home-page"),
@@ -7,9 +8,9 @@ urlpatterns = [
     path("all/<str:type>",views.all,name="all"),
 
     ### the below url is being used for adding new materials to the database
-    path("add/",views.add.as_view(),name="add-material"),
+    path("add/",login_required(views.add.as_view()),name="add-material"),
     
-    path("addtocart/",views.CartView.as_view() ,name="add-to-cart"),
+    path("addtocart/",login_required(views.CartView.as_view()) ,name="add-to-cart"),
 
     path("create/",views.create,name="create"),
 

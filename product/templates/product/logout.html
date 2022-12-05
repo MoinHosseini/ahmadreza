@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}
+{{title}}
+{% endblock title %}
+{% block body %}
+    <h1>Welcome</h1>
+    <p>LogOut</p>
+    <a href = "{% url 'login' %}"> LogIn Again</a>
+{% endblock body %}

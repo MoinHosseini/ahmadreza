@@ -4,11 +4,12 @@ from django.views import View
 from .forms import materialForm,kalaForm,cartForm,factorForm,fcartForm
 from .models import kala,material,cart,fcart,factor as fucktor
 import datetime
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
 
-
+@login_required
 def home(request):
     kc = kala.objects.all()
     mc = material.objects.all()
@@ -17,7 +18,7 @@ def home(request):
     {"kala":kc, "material":mc 
     # ,"factor" : fc
      })
-
+@login_required
 def all(request,type):
     if type == "kala":
         content = kala.objects.all()
@@ -66,7 +67,7 @@ class CartView(View):
         form = cartForm()
         return render(request,"product/addtocart.html",{"form":form})
 
-
+@login_required
 def checkcart(request):
     ##### checked
     content = cart.objects.all()
@@ -76,14 +77,14 @@ def checkcart(request):
 ### for removing every thing
 ### by type
 
-
+@login_required
 def remove(request,id):
     selected = cart.objects.get(id=id)
     if request.method == 'POST':
         selected.delete()
         return HttpResponseRedirect("/")
     return render(request,'delete.html')
-
+@login_required
 def create(request):
     ##### checked
     ## creates a new complex ##
@@ -107,7 +108,7 @@ def create(request):
     else:
         form = kalaForm()
         return render(request, "product/create.html",{"form":form})
-
+@login_required
 def edit(request,id):
     ### for editting materials
 
@@ -142,7 +143,7 @@ def edit(request,id):
         form = materialForm(instance=selected)
         return render(request,'edit.html',{'form': form})
 
-
+@login_required
 def alter(request,id):
     selected = kala.objects.get(id=id)
     if request.method == 'POST':
@@ -156,7 +157,7 @@ def alter(request,id):
         form = kalaForm(instance=selected)
         return render(request,'edit.html',{'form': form})
 
-
+@login_required
 def report(request):
 
     ## for having the total value of materials in storage
@@ -187,7 +188,7 @@ def report(request):
         last.append(mytuple)
     columns = ["نام","قیمت فی","تعداد","جمع"]
     return render(request,"report.html",{"mtv":sum, "col":columns,"last":last , "active":True})
-
+@login_required
 def report2(request):
 
     ## for having the total value of materials in storage
@@ -215,7 +216,7 @@ def report2(request):
         last.append(mytuple)
     columns = ["نام","قیمت فی","قیمت تمام شده"]
     return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
-
+@login_required
 def factor(request,type):
     if request.method == "POST":
         if type == "in":
@@ -251,7 +252,7 @@ def factor(request,type):
         content = fcart.objects.all()
         return render(request,"add.html",{"form":form , "content" : content})
 
-
+@login_required
 def factoring(request):
     if request.method=="GET":
         form = fcartForm()
@@ -262,19 +263,19 @@ def factoring(request):
             form.save()
         form = fcartForm()
         return render(request,"product/factoring.html",{"form":form})
-
+@login_required
 def checkfactor(request):
     ##### checked
     content = fcart.objects.all()
     return render(request,"product/checkfactor.html",{"content":content})
-
+@login_required
 def removefcart(request,id):
     selected = fcart.objects.get(id=id)
     if request.method == 'POST':
         selected.delete()
         return HttpResponseRedirect("/")
     return render(request,'delete.html')
-
+@login_required
 def notif(request,type):
     if type == "value":
         box = []

@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'product',
+    'crispy_forms',
     'jalali_date',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -158,3 +159,5 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = "home-page"
+LOGIN_URL = "login"
+CRISPY_TEMPALTE_PACK = 'bootstrap4'
