@@ -37,7 +37,6 @@ def all(request,type):
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"removefcart" })
   
 
-
 class add(View):
     ##### checked
     ## adds material ##
@@ -53,9 +52,7 @@ class add(View):
         return render(request,"product/all.html")
 
 class CartView(View):
-    ##### checked
-    ## adds materials of a complex to the cart ##
-    
+
     def get(self,request):
         form = cartForm()
         return render(request,"product/addtocart.html",{"form":form})
@@ -73,9 +70,6 @@ def checkcart(request):
     content = cart.objects.all()
     return render(request,"product/check.html",{"content":content})
 
-### must change to something general
-### for removing every thing
-### by type
 
 @login_required
 def remove(request,id):
@@ -84,10 +78,11 @@ def remove(request,id):
         selected.delete()
         return HttpResponseRedirect("/")
     return render(request,'delete.html')
+
+
 @login_required
 def create(request):
-    ##### checked
-    ## creates a new complex ##
+
     if request.method == "POST":
         form = kalaForm(request.POST)
         if form.is_valid():
@@ -108,6 +103,8 @@ def create(request):
     else:
         form = kalaForm()
         return render(request, "product/create.html",{"form":form})
+
+
 @login_required
 def edit(request,id):
     ### for editting materials
@@ -143,6 +140,7 @@ def edit(request,id):
         form = materialForm(instance=selected)
         return render(request,'edit.html',{'form': form})
 
+
 @login_required
 def alter(request,id):
     selected = kala.objects.get(id=id)
@@ -156,6 +154,7 @@ def alter(request,id):
     else:
         form = kalaForm(instance=selected)
         return render(request,'edit.html',{'form': form})
+
 
 @login_required
 def report(request):
@@ -188,6 +187,8 @@ def report(request):
         last.append(mytuple)
     columns = ["نام","قیمت فی","تعداد","جمع"]
     return render(request,"report.html",{"mtv":sum, "col":columns,"last":last , "active":True})
+
+
 @login_required
 def report2(request):
 
@@ -216,6 +217,8 @@ def report2(request):
         last.append(mytuple)
     columns = ["نام","قیمت فی","قیمت تمام شده"]
     return render(request,"report.html",{"mtv":sum, "col":columns,"last":last})
+
+
 @login_required
 def factor(request,type):
     if request.method == "POST":
@@ -232,6 +235,7 @@ def factor(request,type):
                     obj.save()
                 form.instance.content = ld
                 form.save()
+                fcart.objects.all().delete()
                 return render(request,"homepage.html")
         elif type == "out":
             form = factorForm(request.POST)
@@ -246,11 +250,13 @@ def factor(request,type):
                     obj.save()
                 form.instance.content = ld
                 form.save()
+                fcart.objects.all().delete()
                 return render(request,"homepage.html")
     elif request.method == "GET":
         form = factorForm()
         content = fcart.objects.all()
         return render(request,"add.html",{"form":form , "content" : content})
+
 
 @login_required
 def factoring(request):
@@ -263,11 +269,15 @@ def factoring(request):
             form.save()
         form = fcartForm()
         return render(request,"product/factoring.html",{"form":form})
+
+
 @login_required
 def checkfactor(request):
     ##### checked
     content = fcart.objects.all()
     return render(request,"product/checkfactor.html",{"content":content})
+
+
 @login_required
 def removefcart(request,id):
     selected = fcart.objects.get(id=id)
@@ -275,6 +285,8 @@ def removefcart(request,id):
         selected.delete()
         return HttpResponseRedirect("/")
     return render(request,'delete.html')
+
+
 @login_required
 def notif(request,type):
     if type == "value":
