@@ -16,9 +16,7 @@ class material(models.Model):
 class kala(models.Model):
 
     name = models.CharField(max_length=50)
-    current_value_instorage = models.IntegerField(default=0)
     current_price = models.IntegerField(default=0)
-    total_value = models.IntegerField(default=0)
     price_per_unit = models.IntegerField(blank = True)
     materials = JSONField()
 

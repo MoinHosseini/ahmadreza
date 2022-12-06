@@ -31,9 +31,7 @@ class kalaForm(forms.ModelForm):
         exclude = ('materials','total_value',)
         labels = {
         "name": "نام",
-        "current_value_instorage": "مقدار در انبار",
         "current_price": "قیمت فعلی",
-        "total_value": "جمع ارزش کل در انبار",
         "price_per_unit" : "قیمت تمام شده برای هر واحد",
         "materials" : "موارد تشکیل دهنده",
     }

@@ -95,7 +95,6 @@ def create(request):
                 obj = material.objects.get( id = item["element_id"] )
                 price = getattr(obj, "current_price")
                 sum = sum + ( (price * item["impact"]) / 100 )
-            form.instance.total_value = form.cleaned_data["current_value_instorage"] * form.cleaned_data["current_price"]
             form.instance.price_per_unit = sum
             form.instance.materials = ld
             form.save()
@@ -132,10 +131,6 @@ def edit(request,id):
                         under_operation_kala.price_per_unit += change
                         under_operation_kala.save()
             form.save()
-
-            selected.total_value = selected.current_value_instorage * selected.current_price
-            selected.save()
-            
             return render(request,"homepage.html")        
     else:
         form = materialForm(instance=selected)
@@ -149,8 +144,6 @@ def alter(request,id):
         form = kalaForm(request.POST, instance=selected)
         if form.is_valid():
             form.save()
-            selected.total_value = selected.current_value_instorage * selected.current_price
-            selected.save()
             return render(request,"homepage.html")
     else:
         form = kalaForm(instance=selected)
@@ -192,13 +185,6 @@ def report(request):
 
 @login_required
 def report2(request):
-
-    ## for having the total value of materials in storage
-    
-    mtv = kala.objects.values_list("total_value")
-    sum = 0
-    for n in mtv:
-        sum += n[0]
     mname = kala.objects.values_list("name")
     names = []
     for name in mname:
