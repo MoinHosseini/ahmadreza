@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}
+{{title}}
+{% endblock title %}
+{% block body %}
+    <h3>فاکتور انتخابی شما به شرح زیر است</h3>
+    <h5>کاربر ثبت کننده : {{user}}</h5>
+    <hr>
+    <h5>مقادیر موجود در فاکتور :</h5>
+    <ol>
+    {% for key,value in content.items %}
+        <li>{{key}} ---> {{value}}</li>
+        {% endfor %}
+    </ol>
+{% endblock body %}

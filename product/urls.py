@@ -28,6 +28,7 @@ urlpatterns = [
     path("addtofactor/",views.factoring),
     path("checkfactor/",views.checkfactor),
     path("removefcart/<int:id>",views.removefcart),
+    path("view/<int:id>",views.factor_content),
 
     path("notif/<str:type>",views.notif),
 ]

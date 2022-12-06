@@ -31,11 +31,18 @@ def all(request,type):
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"remove" })
     elif type == "factor":
         content = fucktor.objects.all().order_by("-id")
-        return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "e":"element" })
+        return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "type":"view" })
     elif type == "fcart":
         content = fcart.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"removefcart" })
-  
+
+
+@login_required
+def factor_content(request,id):
+    obj = fucktor.objects.get(id = id)
+    user = getattr(obj, "user")
+    content = getattr(obj, "content")
+    return render(request,"product/myview.html",{"user":user , "content" : content})
 
 class add(View):
     ##### checked
@@ -225,11 +232,11 @@ def factor(request,type):
         if type == "in":
             form = factorForm(request.POST)
             if form.is_valid():
-                content = fcart.objects.values()
+                contents = fcart.objects.values()
                 ld = {}
-                for item in content:
-                    # ld[item["element_id"]] = item["price"] * item["tedad"]
+                for item in contents:
                     obj = material.objects.get(id = int(item["element_id"]))
+                    ld[  obj.name   ] = "Price : " + str(item["price"]) + " Tedad : " + str(item["tedad"])
                     obj.current_value_instorage += item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     obj.save()
@@ -240,11 +247,11 @@ def factor(request,type):
         elif type == "out":
             form = factorForm(request.POST)
             if form.is_valid():
-                content = fcart.objects.values()
+                contents = fcart.objects.values()
                 ld = {}
-                for item in content:
-                    # ld[item["element_id"]] = item["price"] * item["tedad"]
+                for item in contents:
                     obj = material.objects.get(id = int(item["element_id"]))
+                    ld[  obj.name   ] = "Price : " + str(item["price"]) + " Tedad : " + str(item["tedad"])
                     obj.current_value_instorage -= item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     obj.save()
