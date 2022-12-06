@@ -11,13 +11,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
-    kc = kala.objects.all()
-    mc = material.objects.all()
-    # fc = factor.objects.all()
-    return render(request,"homepage.html",
-    {"kala":kc, "material":mc 
-    # ,"factor" : fc
-     })
+    return render(request,"homepage.html")
 @login_required
 def all(request,type):
     if type == "kala":
