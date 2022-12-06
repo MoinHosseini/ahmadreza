@@ -2,13 +2,36 @@
 {% block title %}
 گزارش
 {% endblock title %}
+
+{% block style %}
+
+table,th {
+  border: 1px solid;
+  text-align: center;
+}
+
+th {
+  background-color: #04AA6D;
+  border: 0px solid;
+  color: white;
+}
+
+tr:hover {background-color: #ff99ff;}
+
+h3{
+  text-align: center;
+  font-size : 35px
+}
+
+{% endblock style %}
+
 {% block body %}
 {% if active %}
 <h3>مقدار کل ارزش مواد اولیه در انبار => {{mtv}}</h3>
 {% endif %}
 <hr>
 <div class="container">
-    <table class="table table-striped">
+    <table class="table ">
       <thead>
         <tr>
           <th>{{col.0}}</th>

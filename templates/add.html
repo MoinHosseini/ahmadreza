@@ -1,18 +1,20 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
 {% load jalali_tags %}
 {% load static %}
 {% block title %}
 تعریف یک ماده اولیه
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
+<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
+{% endblock head %}
+
 {% block body %}
 <form method="POST">
   {% csrf_token %}
-    {{form|crispy}}
+    {{form}}
   <button type='submit'>ارسال</button>
 </form>
 {% endblock body %}
-{% block html %}
-<link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
-<script src="{% static 'admin/js/django_jalali.min.js' %}"></script>
-{% endblock html %}

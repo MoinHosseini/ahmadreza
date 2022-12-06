@@ -1,9 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
 {{title}}
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head %}
+
 {% block body %}
-    <h1>Welcome</h1>
-    <p>LogOut</p>
-    <a href = "{% url 'login' %}"> LogIn Again</a>
+    <div class="mylogout">
+    <h3>از وقتی که با ما گذراندید متشکریم</h3>
+    <h3>به امید دیدار مجدد شما</h3>
+    <a href = "{% url 'login' %}"> ورود مجدد</a>
+    </div>
 {% endblock body %}

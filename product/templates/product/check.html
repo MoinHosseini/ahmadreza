@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
+{% load static %}
+
 {% block title %}
 چک کردن سبد
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head %}
+
 {% block body %}
 <h3>موارد موجود برای ساخت ماده پیچیده جدید و میزان تاثیر آنها ب صورت درصدی در زیر آمده اند</h3>
     <hr>
     <ol>
         {% for item in content  %}
-        <li>{{item.element}} : {{item.impact}} % </li>
+        <li class="bod">{{item.element}} : {{item.impact}} % </li>
         {% endfor %}
     </ol>
-    <hr>
+
     <button>
         <a href="/create"> تایید و مرحله بعد
     </button>

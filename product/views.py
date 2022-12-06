@@ -151,7 +151,7 @@ def alter(request,id):
             form.save()
             selected.total_value = selected.current_value_instorage * selected.current_price
             selected.save()
-            return render(request,"homepage.html")        
+            return render(request,"homepage.html")
     else:
         form = kalaForm(instance=selected)
         return render(request,'edit.html',{'form': form})

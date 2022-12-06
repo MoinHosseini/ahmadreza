@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
 {% block title %}
 ویرایش
 {% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head %}
 {% block body %}
 <form method="POST">
   {% csrf_token %}
-    {{form|crispy}}
+    {{form}}
   <button type='submit'>ارسال</button>
 </form>
 {% endblock body %}

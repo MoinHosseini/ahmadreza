@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+
 {% block title %}
 {{title}}
 {% endblock title %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head %}
 {% block body %}
-    <h1>Welcome</h1>
-    <p>Login</p>
+    <h3>خوش آمدید</h3>
     <form method="POST">
         {% csrf_token %}
-        {{form|crispy}}
+        {{form}}
         <button type="submit">Login</button>
     </form>
 {% endblock body %}

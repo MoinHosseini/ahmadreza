@@ -1,14 +1,20 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load static %}
+
 {% block title %}
 افزودن آیتم به سبد
 {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock head %}
+
 {% block body %}
     <form method="POST">
     {% csrf_token %}
-    <h3>راهنما:</h3>
-    <p>در اینجا برای اضافه کردن یک کالا به فاکتور، ان کالا را انتخاب و فیلدهای مربوطه را پر کنید</p>
-    {{form|crispy}}
+    <h3>راهنما</h3>
+    <p class="myp">در اینجا برای اضافه کردن یک کالا به فاکتور، ان کالا را انتخاب و فیلدهای مربوطه را پر کنید</p>
+    {{form}}
     <hr>
     <button type='submit'>ثبت مورد بالا</button>
   </form>
