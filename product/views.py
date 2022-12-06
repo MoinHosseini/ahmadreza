@@ -30,7 +30,7 @@ def all(request,type):
         content = cart.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"remove" })
     elif type == "factor":
-        content = fucktor.objects.all()
+        content = fucktor.objects.all().order_by("-id")
         return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "e":"element" })
     elif type == "fcart":
         content = fcart.objects.all()
