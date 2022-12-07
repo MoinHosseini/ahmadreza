@@ -1,11 +1,37 @@
 {% extends 'base.html' %}
-{% block title %}
+<{% block title %}
 خانه
 {% endblock title %}
-{% block body %}
-<h2>خوش آمدید </h2>
-<h4>    {{user}} جان </h4>
-<h4>این یک تست است و در نسخه نهایی کیفیت به شدت افزایش می یابد</h4>
-<h5>ایرادات فنی احتمالی را گزارش کنید</h5>
+{% block style %}
+.container{
+  background-color: #f576e4 ;
+}
+.home{
+  text-align : center;
+  font-size:30px;
+}
+body{
+  background-color: #f2d335 ;
+}
 
+p{
+  text-align : center;
+  font-size:23px;
+}
+{% endblock style %}
+
+
+{% block body %}
+  <div class="container">
+    <h3 class="home"> !!! جان {{user}} خوش آمدید</h3>
+    <hr>
+    <p>بهتر است در ابتدای کار، تاریخ مصرف مواد اولیه و همچنین موجودی انبار را چک کنید</p>
+    <hr>
+    <p>آدرس : قم - شهرک قدس - ی جایی ک من نمیدونم</p>
+    <p>ارسال به تمام نقاط شهر با پیک موتوری</p>
+    <p>تلفن سفارشات :02531111111</p>
+    <hr>
+    <h2 class="home"> {% now "G:i:s " %} : ساعت سیستم </h2>
+  </div>
 {% endblock body %}
+

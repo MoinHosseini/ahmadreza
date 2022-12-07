@@ -64,7 +64,11 @@ class factorForm(forms.ModelForm):
         exclude = ('content',)
         labels = {
         "user": "ثبت کننده",
+        "issue_date" : "تاریخ صدور",
         }
+    def __init__(self, *args, **kwargs):
+        super(factorForm, self).__init__(*args, **kwargs)
+        self.fields['issue_date'] = JalaliDateField( label=('تاریخ صدور'), widget=AdminJalaliDateWidget )
 
 class fcartForm(forms.ModelForm):
     class Meta:
@@ -76,13 +80,3 @@ class fcartForm(forms.ModelForm):
         "price": "قیمت",
         }
 
-
-# class studentForm(forms.ModelForm):
-#     class Meta:
-#         model = student
-#         fields = '__all__'
-
-#     def __init__(self, *args, **kwargs):
-#         super(studentForm, self).__init__(*args, **kwargs)
-#         self.fields['birthdate'] = JalaliDateField(label=('date'), # date format is  "yyyy-mm-dd"
-#             widget=AdminJalaliDateWidget)

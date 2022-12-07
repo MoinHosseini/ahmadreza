@@ -42,6 +42,7 @@ class user(models.Model):
 class factor(models.Model):
     user = models.ForeignKey(user,on_delete=models.CASCADE)
     content = JSONField()
+    issue_date = models.DateField(blank=True)
 
     def __str__(self):
         return str(self.pk)

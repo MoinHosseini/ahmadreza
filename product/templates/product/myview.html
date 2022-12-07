@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
 {{title}}
 {% endblock title %}
@@ -12,10 +11,13 @@
 {% block body %}
     <h3>فاکتور انتخابی شما به شرح زیر است</h3>
     <hr>
-    <h3>مقادیر موجود در فاکتور </h3>
+    <h3>صادرکننده : {{user}}</h3>
+    <hr>
+    <h3> {{issue_date}} : تاریخ صدور</h3>
+    <hr>
     <ol>
     {% for key,value in content.items %}
-        <li class="bod">{{key}} :> {{value}}</li>
+        <li class="bod">{{key}} :> {{value}} ----- </li>
         {% endfor %}
     </ol>
     

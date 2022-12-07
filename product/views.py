@@ -36,7 +36,8 @@ def factor_content(request,id):
     obj = fucktor.objects.get(id = id)
     user = getattr(obj, "user")
     content = getattr(obj, "content")
-    return render(request,"product/myview.html",{"user":user , "content" : content})
+    issue_date = getattr(obj, "issue_date")
+    return render(request,"product/myview.html",{"user":user , "content" : content , "issue_date" : issue_date})
 
 class add(View):
     ##### checked
