@@ -16,7 +16,7 @@ urlpatterns = [
 
     path("check/",views.checkcart,name="check-cart"),
 
-    path("remove/<int:id>",views.remove,name="remove"),
+    path("remove/<str:type>/<int:id>",views.remove,name="remove"),
     path("edit/<int:id>/",views.edit),
     path("alter/<int:id>/",views.alter),
 

@@ -22,7 +22,7 @@ def all(request,type):
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })    
     elif type == "cart":
         content = cart.objects.all()
-        return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"remove" })
+        return render(request,"product/all.html",{"content":content , "title" : "محتویات سبد" , "type":"remove/cart" })
     elif type == "factor":
         content = fucktor.objects.all().order_by("-id")
         return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "type":"view" })
@@ -74,11 +74,22 @@ def checkcart(request):
 
 
 @login_required
-def remove(request,id):
-    selected = cart.objects.get(id=id)
-    if request.method == 'POST':
-        selected.delete()
-        return HttpResponseRedirect("/")
+def remove(request,type,id):
+    if type == "cart":
+        selected = cart.objects.get(id=id)
+        if request.method == 'POST':
+            selected.delete()
+            return render(request,"homepage.html")    
+    elif type == "material":
+        selected = material.objects.get(id=id)
+        if request.method == 'POST':
+            selected.delete()
+            return render(request,"homepage.html")   
+    elif type == "kala":
+        selected = kala.objects.get(id=id)
+        if request.method == 'POST':
+            selected.delete()
+            return render(request,"homepage.html") 
     return render(request,'delete.html')
 
 
@@ -135,7 +146,7 @@ def edit(request,id):
             return render(request,"homepage.html")        
     else:
         form = materialForm(instance=selected)
-        return render(request,'edit.html',{'form': form})
+        return render(request,'edit.html',{'form': form , "type":"material", "id":id})
 
 
 @login_required
@@ -148,7 +159,7 @@ def alter(request,id):
             return render(request,"homepage.html")
     else:
         form = kalaForm(instance=selected)
-        return render(request,'edit.html',{'form': form})
+        return render(request,'edit.html',{'form': form , "type":"kala", "id":id})
 
 
 @login_required
