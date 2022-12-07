@@ -37,7 +37,10 @@ def factor_content(request,id):
     user = getattr(obj, "user")
     content = getattr(obj, "content")
     issue_date = getattr(obj, "issue_date")
-    return render(request,"product/myview.html",{"user":user , "content" : content , "issue_date" : issue_date})
+    active_user = getattr(obj, "active_user")
+    fact_type = getattr(obj, "fact_type")
+    return render(request,"product/myview.html",{"user":user , "content" : content ,
+     "issue_date" : issue_date, "active_user":active_user , "fact_type":fact_type })
 
 class add(View):
     ##### checked
@@ -152,6 +155,11 @@ def edit(request,id):
 @login_required
 def alter(request,id):
     selected = kala.objects.get(id=id)
+    content = selected.materials
+    a = {}
+    for k, v in content.items():
+        a[str(material.objects.get(id = int(k)))] = str(v)
+        
     if request.method == 'POST':
         form = kalaForm(request.POST, instance=selected)
         if form.is_valid():
@@ -159,7 +167,7 @@ def alter(request,id):
             return render(request,"homepage.html")
     else:
         form = kalaForm(instance=selected)
-        return render(request,'edit.html',{'form': form , "type":"kala", "id":id})
+        return render(request,'edit.html',{'form': form , "type":"kala", "id":id , "materials":a})
 
 
 @login_required
@@ -228,11 +236,14 @@ def factor(request,type):
                 ld = {}
                 for item in contents:
                     obj = material.objects.get(id = int(item["element_id"]))
+                    obj.current_price = int(item["price"])
                     ld[  obj.name   ] = "Price : " + str(item["price"]) + " Tedad : " + str(item["tedad"])
                     obj.current_value_instorage += item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     obj.save()
                 form.instance.content = ld
+                form.instance.active_user =  request.user
+                form.instance.fact_type = type
                 form.save()
                 fcart.objects.all().delete()
                 return render(request,"homepage.html")
@@ -248,6 +259,8 @@ def factor(request,type):
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     obj.save()
                 form.instance.content = ld
+                form.instance.active_user =  request.user
+                form.instance.fact_type = type
                 form.save()
                 fcart.objects.all().delete()
                 return render(request,"homepage.html")

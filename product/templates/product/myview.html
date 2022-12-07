@@ -3,22 +3,31 @@
 {% block title %}
 {{title}}
 {% endblock title %}
-
+{% block style %}
+.mydiv{
+    background-color: #5fed85 ;
+}
+{% endblock style %}
 {% block head %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 {% endblock head %}
 
 {% block body %}
+    <div class="mydiv">
     <h3>فاکتور انتخابی شما به شرح زیر است</h3>
     <hr>
     <h3>صادرکننده : {{user}}</h3>
     <hr>
+    <h3>صادرکننده پشت کامپیوتر : {{active_user}}</h3>
+    <hr>
+    <h3>نوع فاکتور : {{fact_type}}</h3>
+    <hr>
     <h3> {{issue_date}} : تاریخ صدور</h3>
     <hr>
+    </div>
     <ol>
     {% for key,value in content.items %}
         <li class="bod">{{key}} :> {{value}} ----- </li>
         {% endfor %}
     </ol>
-    
 {% endblock body %}

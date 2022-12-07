@@ -43,6 +43,8 @@ class factor(models.Model):
     user = models.ForeignKey(user,on_delete=models.CASCADE)
     content = JSONField()
     issue_date = models.DateField(blank=True)
+    active_user = models.CharField(max_length=100)
+    fact_type = models.CharField(max_length=10)
 
     def __str__(self):
         return str(self.pk)

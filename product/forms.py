@@ -61,7 +61,7 @@ class factorForm(forms.ModelForm):
     class Meta:
         model = factor
         fields = '__all__'
-        exclude = ('content',)
+        exclude = ('content','active_user','fact_type',)
         labels = {
         "user": "ثبت کننده",
         "issue_date" : "تاریخ صدور",

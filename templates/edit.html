@@ -3,6 +3,14 @@
 {% block title %}
 ویرایش
 {% endblock title %}
+{% block style %}
+.items{
+  text-align : center ;
+  font-size:20px ;
+}
+{% endblock style %}
+
+
 {% block head %}
 <link rel="stylesheet" href="{% static 'style.css' %}">
 <link rel="stylesheet" href="{% static 'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css' %}">
@@ -12,6 +20,11 @@
 <form method="POST">
   {% csrf_token %}
     {{form}}
+    <ol class="items">
+      {% for key,value in  materials.items %}
+      <li>{{key}} : {{value}}</li>
+      {% endfor %}
+    </ol>
   <button type='submit'>ارسال</button>
 </form>
 <a href="/remove/{{type}}/{{id}}">
