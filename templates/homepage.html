@@ -85,10 +85,9 @@
 <div class="container" style="margin-top:30px">
   <div class="row">
     <div class="col-sm-4">
-      <h2>زنده یاد فلانی</h2>
-      <div class="fakeimg">Fake Image</div>
-      <p>صحبتی درباره مرحوم</p>
-      <hr class="d-sm-none">
+      <button type="button" class="btn btn-info">
+        <a class="nav-link" href="/calc">محاسبه اخطار ها</a>
+      </button>
     </div>
     <div class="col-sm-8">
       <br>
@@ -104,7 +103,8 @@
 
 <div class="footer">
   <label for="usertime">زمان ورود</label><br>
-  <p dir="ltr" id="usertime">{{ user.last_login | naturaltime }}</p>  
+  <p dir="ltr" id="usertime">{{ user.last_login | naturaltime }}</p>
+  <p>{{mina}}</p>
 </div>
 
 </body>
