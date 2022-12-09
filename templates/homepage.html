@@ -1,3 +1,4 @@
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
   <head>
@@ -45,7 +46,6 @@
   </style>
 </head>
 <body>
-
 
 <div id = "heade" class="jumbotron text-center" style="margin-bottom:0">
   <h1>تهیه غذا و کیترینگ ؟؟؟</h1>
@@ -103,7 +103,8 @@
 </div>
 
 <div class="footer">
-  <p>All rights Reserved</p>
+  <label for="usertime">زمان ورود</label><br>
+  <p dir="ltr" id="usertime">{{ user.last_login | naturaltime }}</p>  
 </div>
 
 </body>
