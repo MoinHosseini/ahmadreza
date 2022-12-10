@@ -243,7 +243,7 @@ def factor(request,type):
                     obj.save()
                 form.instance.content = ld
                 form.instance.active_user =  request.user
-                form.instance.fact_type = type
+                form.instance.fact_type = "ورود"
                 form.save()
                 fcart.objects.all().delete()
                 return render(request,"homepage.html")
@@ -260,7 +260,7 @@ def factor(request,type):
                     obj.save()
                 form.instance.content = ld
                 form.instance.active_user =  request.user
-                form.instance.fact_type = type
+                form.instance.fact_type = "خروج"
                 form.save()
                 fcart.objects.all().delete()
                 return render(request,"homepage.html")
