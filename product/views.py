@@ -1,4 +1,3 @@
-from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 from .forms import materialForm,kalaForm,cartForm,factorForm,fcartForm
@@ -12,39 +11,32 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def home(request):
     return render(request,"homepage.html")
+
+
 @login_required
 def all(request,type):
+
     if type == "kala":
         content = kala.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "کالاها" , "type":"alter"})
+    
     elif type == "material":
         content = material.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"edit" })    
+    
     elif type == "cart":
         content = cart.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "محتویات سبد" , "type":"remove/cart" })
+    
     elif type == "factor":
         content = fucktor.objects.all().order_by("-id")
         return render(request,"product/all.html",{"content":content , "title" : "فاکتورها"  , "type":"view" })
+    
     elif type == "fcart":
         content = fcart.objects.all()
         return render(request,"product/all.html",{"content":content , "title" : "مواد اولیه" , "type":"removefcart" })
 
-
-@login_required
-def factor_content(request,id):
-    obj = fucktor.objects.get(id = id)
-    user = getattr(obj, "user")
-    content = getattr(obj, "content")
-    issue_date = getattr(obj, "issue_date")
-    active_user = getattr(obj, "active_user")
-    fact_type = getattr(obj, "fact_type")
-    return render(request,"product/myview.html",{"user":user , "content" : content ,
-     "issue_date" : issue_date, "active_user":active_user , "fact_type":fact_type })
-
 class add(View):
-    ##### checked
-    ## adds material ##
     def get(self,request):
         form = materialForm()
         return render(request,'add.html',{"form":form})
@@ -54,10 +46,10 @@ class add(View):
         if form.is_valid():
             form.instance.total_value = form.cleaned_data["current_value_instorage"] * form.cleaned_data["current_price"]
             form.save()
-        return render(request,"product/all.html")
+            return render(request,"homepage.html")
+
 
 class CartView(View):
-
     def get(self,request):
         form = cartForm()
         return render(request,"product/addtocart.html",{"form":form})
@@ -70,35 +62,7 @@ class CartView(View):
         return render(request,"product/addtocart.html",{"form":form})
 
 @login_required
-def checkcart(request):
-    ##### checked
-    content = cart.objects.all()
-    return render(request,"product/check.html",{"content":content})
-
-
-@login_required
-def remove(request,type,id):
-    if type == "cart":
-        selected = cart.objects.get(id=id)
-        if request.method == 'POST':
-            selected.delete()
-            return render(request,"homepage.html")    
-    elif type == "material":
-        selected = material.objects.get(id=id)
-        if request.method == 'POST':
-            selected.delete()
-            return render(request,"homepage.html")   
-    elif type == "kala":
-        selected = kala.objects.get(id=id)
-        if request.method == 'POST':
-            selected.delete()
-            return render(request,"homepage.html") 
-    return render(request,'delete.html')
-
-
-@login_required
 def create(request):
-
     if request.method == "POST":
         form = kalaForm(request.POST)
         if form.is_valid():
@@ -121,9 +85,29 @@ def create(request):
 
 
 @login_required
-def edit(request,id):
-    ### for editting materials
+def checkcart(request):
+    content = cart.objects.all()
+    return render(request,"product/check.html",{"content":content})
 
+
+@login_required
+def remove(request,type,id):
+    if type == "cart":
+        selected = cart.objects.get(id=id)
+           
+    elif type == "material":
+        selected = material.objects.get(id=id)
+    
+    elif type == "kala":
+        selected = kala.objects.get(id=id) 
+    
+    if request.method == 'POST':
+        selected.delete()
+        return render(request,"homepage.html")
+    return render(request,'delete.html')
+
+@login_required
+def edit(request,id):
     selected = material.objects.get(id=id)
     cp = selected.current_price
     if request.method == 'POST':
@@ -172,9 +156,6 @@ def alter(request,id):
 
 @login_required
 def report(request):
-
-    ## for having the total value of materials in storage
-    
     mtv = material.objects.values_list("total_value")
     sum = 0
     for n in mtv:
@@ -236,10 +217,28 @@ def factor(request,type):
                 ld = {}
                 for item in contents:
                     obj = material.objects.get(id = int(item["element_id"]))
-                    obj.current_price = int(item["price"])
                     ld[  obj.name   ] = "Price : " + str(item["price"]) + " Tedad : " + str(item["tedad"])
+                    cp = obj.current_price
+                    obj.current_price = int(item["price"])
                     obj.current_value_instorage += item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
+                    
+                    if (cp != int(item["price"]) ):
+                        np =  int(item["price"])
+                        np = np - cp
+                        data = kala.objects.values_list("materials")
+                        names = kala.objects.values_list("name")
+                        final = []
+                        for n in names:
+                            final.append(n[0])
+                        for index,va in enumerate(data):
+                            op = va[0]
+                            if str(item["element_id"]) in op:
+                                impact = op[str(item["element_id"])] / 100
+                                change = impact * np
+                                under_operation_kala = kala.objects.get( name = final[index] )
+                                under_operation_kala.price_per_unit += change
+                                under_operation_kala.save()
                     obj.save()
                 form.instance.content = ld
                 form.instance.active_user =  request.user
@@ -285,7 +284,6 @@ def factoring(request):
 
 @login_required
 def checkfactor(request):
-    ##### checked
     content = fcart.objects.all()
     return render(request,"product/checkfactor.html",{"content":content})
 
@@ -295,8 +293,20 @@ def removefcart(request,id):
     selected = fcart.objects.get(id=id)
     if request.method == 'POST':
         selected.delete()
-        return HttpResponseRedirect("/")
+        return render(request,"homepage.html")
     return render(request,'delete.html')
+
+
+@login_required
+def factor_content(request,id):
+    obj = fucktor.objects.get(id = id)
+    user = getattr(obj, "user")
+    content = getattr(obj, "content")
+    issue_date = getattr(obj, "issue_date")
+    active_user = getattr(obj, "active_user")
+    fact_type = getattr(obj, "fact_type")
+    return render(request,"product/myview.html",{"user":user , "content" : content ,
+     "issue_date" : issue_date, "active_user":active_user , "fact_type":fact_type })
 
 
 @login_required
