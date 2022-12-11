@@ -25,9 +25,9 @@
       <li>{{key}} : {{value}}</li>
       {% endfor %}
     </ol>
-  <button type='submit'>ارسال</button>
+  <button type='submit'>تایید</button>
 </form>
-<a href="/remove/{{type}}/{{id}}">
+<a href="{% url 'remove' type id %}">
   <button>حذف مورد بالا</button>
 </a>  
 {% endblock body %}

@@ -18,16 +18,16 @@
     </ol>
     <hr>
     <button>
-        <a href="/factor/out"> تایید و صدور فاکتور خروج
+        <a href="{% url 'factor' 'out' %}"> تایید و صدور فاکتور خروج
     </button>
     <hr>
     
     <button>
-        <a href="/factor/in"> تایید و صدور فاکتور ورود
+        <a href="{% url 'factor' 'in' %}"> تایید و صدور فاکتور ورود
     </button>
     <hr>
 
     <button>
-        <a href="/addtofactor"> بازگشت به مرحله قبل
+        <a href="{% url 'addtofactor' %}"> بازگشت به مرحله قبل
     </button>
 {% endblock body %}

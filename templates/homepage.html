@@ -1,5 +1,6 @@
 
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +13,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
   <style>
     #header
     {
@@ -109,13 +110,6 @@
         background-color: black;
     }
     
-    .fakeimg
-    {
-        width: 300px;
-        height: 200px;
-        background-color: gray;
-    }
-    
     a:hover
     {
         color: white;
@@ -126,36 +120,35 @@
   </head>
 <body>
     <div id="header" class="text-right">
-        <h1>تهیه غذا و کیترینگ </h1>
-        <p>با مدیریت فلانی</p> 
+        <h1>تهیه غذا و کیترینگ مدیران </h1>
+        <p>با مدیریت شمس‌الدینی</p> 
     </div>
-
     <nav >
         <ul id="nav-section" class="navbar-nav mx-auto">
           <li class="nav-item text-center li-elem">
-            <a class="nav-link" href="/report/material">گزارش انبار</a>
+            <a class="nav-link" href="{% url 'materialreport' %}">گزارش انبار</a>
           </li>    
           <li class="nav-item text-center li-elem">
-            <a class="nav-link" href="/report/kala">گزارش منو</a>
+            <a class="nav-link" href="{% url 'kalareport' %}">گزارش منو</a>
           </li>
     
           <li class="nav-item text-center li-elem">
-            <a class="nav-link" href="/addtofactor">فاکتورها</a>
+            <a class="nav-link" href="{% url 'addtofactor' %}">فاکتورها</a>
           </li>
           <li class="nav-item dropdown text-center li-elem">
-            <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink"
+            <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink"
             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             ایجاد
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="/add">ماده اولیه</a>
-              <a class="dropdown-item" href="/create">غذا</a>
-              <a class="dropdown-item" href="/addtofactor">فاکتور</a>
+              <a class="dropdown-item" href="{% url 'add-material' %}">ماده اولیه</a>
+              <a class="dropdown-item" href="{% url 'create' %}">غذا</a>
+              <a class="dropdown-item" href="{% url 'addtofactor' %}">فاکتور</a>
             </div>
           </li>
         </li>
         <li class="nav-item text-center li-elem">
-          <a class="nav-link" href="/logout">خروج</a>
+          <a class="nav-link" href="{% url 'logout' %}">خروج</a>
         </li>
         </ul>
       </nav>
@@ -175,14 +168,10 @@
       <div class="footer">
         <div>
             <div class="footer-elements">
-              <h2 class="elem">زنده یاد فلانی</h2>
-              <div class="elem fakeimg">Fake Image</div>
-              <p class="elem">صحبتی درباره مرحوم</p>
-              
+              <h2 class="elem">زمان ورود</h2>
+              <p dir="ltr" id="usertime">{{ user.last_login | naturaltime }}</p>
             </div>
-              
         </div>
-        <p>All rights Reserved</p>
     </div>
 </body>
 </html>

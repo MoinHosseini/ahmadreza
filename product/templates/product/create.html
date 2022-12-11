@@ -18,9 +18,9 @@
     </form>
     <hr>
     <button>
-      <a href="/check"> لیست مواد اولیه موجود در ساخت غذا
+      <a href="{% url 'check-cart' %}"> لیست مواد اولیه موجود در ساخت غذا
       </button>
       <button>
-      <a href="/addtocart"> افزودن به مواد تشکیل دهنده غذا
+      <a href="{% url 'add-to-cart' %}"> افزودن به مواد تشکیل دهنده غذا
     </button>
 {% endblock body %}

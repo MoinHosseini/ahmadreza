@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang='fa' dir='rtl'>
   <head>
     <meta charset="UTF-8">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>  
+    <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
     <title>
         {% block title %}{% endblock title %}
     </title>
@@ -26,47 +28,47 @@
           <a class="navbar-brand" href="https://www.linkedin.com/in/moeinaldin-alihosseini/">HesaWeb</a>
         </div>
         <ul class="nav navbar-nav">
-          <li><a class="mylink" href="/">خانه</a></li>
+          <li><a class="mylink" href="{% url 'home-page' %}">خانه</a></li>
 
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">مواد اولیه<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a class="mylink" href="/add">ایجاد ماده اولیه</a></li>
-              <li><a class="mylink" href="/all/material">مشاهده تمام مواد اولیه</a></li>
+              <li><a class="mylink" href="{% url 'add-material' %}">ایجاد ماده اولیه</a></li>
+              <li><a class="mylink" href="{% url 'all' 'material' %}">مشاهده تمام مواد اولیه</a></li>
             </ul>
           </li>
 
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">غذاها<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a class="mylink" href="/create">ایجاد غذا</a></li>
-              <li><a class="mylink" href="/addtocart">افزودن به سبد برای ایجاد غذا</a></li>
-              <li><a class="mylink" href="/check">مشاهده مواد فعلی غذای در دست ثبت</a></li>
-              <li><a class="mylink" href="/all/cart">حذف یکی از مواد فعلی غذای در دست ثبت</a></li>
-              <li><a class="mylink" href="/all/kala">مشاهده تمام غذاها</a></li>
+              <li><a class="mylink" href="{% url 'create' %}">ایجاد غذا</a></li>
+              <li><a class="mylink" href="{% url 'add-to-cart' %}">افزودن به سبد برای ایجاد غذا</a></li>
+              <li><a class="mylink" href="{% url 'check-cart' %}">مشاهده مواد فعلی غذای در دست ثبت</a></li>
+              <li><a class="mylink" href="{% url 'all' 'cart' %}">حذف یکی از مواد فعلی غذای در دست ثبت</a></li>
+              <li><a class="mylink" href="{% url 'all' 'kala' %}">مشاهده تمام غذاها</a></li>
             </ul>
           </li>
 
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">فاکتور<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a class="mylink" href="/addtofactor">افزودن سطر به فاکتور در دست ثبت</a></li>
-              <li><a class="mylink" href="/factor/out">صدور فاکتور نهایی خروج</a></li>
-              <li><a class="mylink" href="/factor/in">صدور فاکتور نهایی ورود</a></li>
-              <li><a class="mylink" href="/checkfactor">مشاهده سطرهای فعلی فاکتور در دست ثبت</a></li>
-              <li><a class="mylink" href="/all/fcart">حذف یکی از سطرهای فعلی فاکتور در دست ثبت</a></li>
-              <li><a class="mylink" href="/all/factor">مشاهده تمام فاکتورها</a></li>
+              <li><a class="mylink" href="{% url 'addtofactor' %}">افزودن سطر به فاکتور در دست ثبت</a></li>
+              <li><a class="mylink" href="{% url 'factor' 'out' %}">صدور فاکتور نهایی خروج</a></li>
+              <li><a class="mylink" href="{% url 'factor' 'in' %}">صدور فاکتور نهایی ورود</a></li>
+              <li><a class="mylink" href="{% url 'checkfactor' %}">مشاهده سطرهای فعلی فاکتور در دست ثبت</a></li>
+              <li><a class="mylink" href="{% url 'all' 'fcart' %}">حذف یکی از سطرهای فعلی فاکتور در دست ثبت</a></li>
+              <li><a class="mylink" href="{% url 'all' 'factor' %}">مشاهده تمام فاکتورها</a></li>
             </ul>
           </li>
     
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">گزارش<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a class="mylink" href="/report/material">مواد اولیه</a></li>
-              <li><a class="mylink" href="/report/kala">غذاها</a></li>
+              <li><a class="mylink" href="{% url 'materialreport' %}">مواد اولیه</a></li>
+              <li><a class="mylink" href="{% url 'kalareport' %}">غذاها</a></li>
             </ul>
           </li>
 
           <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">اخطارها<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a class="mylink" href="/notif/value">موجودی انبار</a></li>
-              <li><a class="mylink" href="/notif/date">تاریخ انقضا مواد اولیه</a></li>
+              <li><a class="mylink" href="{% url 'notif' 'value' %}">موجودی انبار</a></li>
+              <li><a class="mylink" href="{% url 'notif' 'date' %}">تاریخ انقضا مواد اولیه</a></li>
             </ul>
           </li>
           <li class="active"><a class="mylink" href="{% url 'logout' %}">خروج</a>
