@@ -9,7 +9,7 @@ class materialForm(forms.ModelForm):
     class Meta:
         model = material
         fields = '__all__'
-        exclude = ('total_value',)
+        exclude = ('total_value','all_dates',)
         labels = {
         "name": "نام",
         "current_value_instorage": "مقدار در انبار",
@@ -78,5 +78,9 @@ class fcartForm(forms.ModelForm):
         "element": "کالا",
         "tedad": "تعداد",
         "price": "قیمت",
+        "expire_date" : "تاریخ انقضا",
         }
+    def __init__(self, *args, **kwargs):
+        super(fcartForm, self).__init__(*args, **kwargs)
+        self.fields['expire_date'] = JalaliDateField( label=('تاریخ انقضا'), widget=AdminJalaliDateWidget )
 

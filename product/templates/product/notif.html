@@ -10,15 +10,30 @@
 {% endblock head %}
 
 {% block body %}
-    <h3>پیغام‌های شما به شرح زیر است</h3>
+<h3>پیغام‌های شما به شرح زیر است</h3>
+    {% if datep %}
+    <h3>در صورتی که روی هر یک از ایتم های زیر کلیک کنید، تاریخ مصرف فعلی حذف شده و تاریخ مصرف قدیمی ترین خرید این کالا جلیگزین خواهد شد</h3>
     <ol>
         {% for item in content %}
         <li>
             <button>
-                <a href="">{{item}}
+                <a href="{% url 'editdate' item %}">{{item}} , تاریخ == {{current_date}}
             </button>
         </li>
         <hr>
         {% endfor %}
     </ol>
+    {% else %}
+    <h3>در صورتی که روی هر یک از ایتم های زیر کلیک کنید، به صفحه ایجاد آیتم برای فاکتور هدایت می شوید</h3>
+    <ol>
+        {% for item in content %}
+        <li>
+            <button>
+                <a href="{% url 'addtofactor' %}">{{item}}
+            </button>
+        </li>
+        <hr>
+        {% endfor %}
+    </ol>
+    {% endif %}
 {% endblock body %}

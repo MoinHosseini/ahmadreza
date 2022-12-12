@@ -45,6 +45,10 @@ class add(View):
         form = materialForm(request.POST)
         if form.is_valid():
             form.instance.total_value = form.cleaned_data["current_value_instorage"] * form.cleaned_data["current_price"]
+            # t = len(form.instance.all_dates)
+            a = {}
+            a[0] = form.cleaned_data["expire_date"]
+            form.instance.all_dates = a 
             form.save()
             return render(request,"homepage.html")
 
@@ -223,6 +227,11 @@ def factor(request,type):
                     obj.current_value_instorage += item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     
+                    
+                    t = len(obj.all_dates)
+                    obj.all_dates[t+1] = item["expire_date"]
+
+                    
                     if (cp != int(item["price"]) ):
                         np =  int(item["price"])
                         np = np - cp
@@ -322,9 +331,29 @@ def notif(request,type):
         for index,item in enumerate(mv):
             if item >= cv[index]:
                 box.append( str(final[index]) + " --- >" + "  مقدار فعلی = " + str(cv[index][0]) )
-        return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":box})        
+        return render(request,'product/notif.html',{"title":"اخطار موجودی", "content":box, "datep" : False})        
     
     elif type == "date":
         current_date = datetime.date.today()
         list = material.objects.filter(expire_date = current_date)
-        return render(request,'product/notif.html',{"title":"پیغام‌ها", "content":list})
+        return render(request,'product/notif.html',{"title":"اخطار تاریخ", "content":list , "current_date":current_date, "datep" : True})
+
+
+@login_required
+def editdate(request,item):
+    if request.method == "GET":
+        selected = material.objects.get(name = item)
+        if len(selected.all_dates) == 0:
+            msg = "خطایی رخ داده است.. این کالا دارای تاریخ انقضای دیگری نیست ."
+        return render(request,'delete.html',{"msg":msg})
+    elif request.method == "POST":
+        selected = material.objects.get(name = item)
+        if len(selected.all_dates) == 0:
+            return render(request,"homepage.html")
+        temp = selected.all_dates.pop(list(selected.all_dates.keys())[0])
+        if len(selected.all_dates) == 0:
+            selected.expire_date = temp
+        else:
+            selected.expire_date = selected.all_dates [ list(selected.all_dates.keys())[0] ]
+        selected.save()
+        return render(request,"homepage.html")

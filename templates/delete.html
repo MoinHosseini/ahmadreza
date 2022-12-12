@@ -23,6 +23,7 @@ input[type=submit] {
 {% endblock head %}
 {% block body %}
     <p>آیا از حذف  مورد انتخاب شده مطمئن هستید ؟</p>
+    <p>{{msg}}</p>
     <form action="" method="post">
       {% csrf_token %}
       <input type="submit" value="Delete">

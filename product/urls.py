@@ -26,4 +26,5 @@ urlpatterns = [
     path("view/<int:id>",views.factor_content , name="view"),
 
     path("notif/<str:type>",views.notif,name="notif"),
+    path("editdate/<str:item>",views.editdate,name="editdate"),
 ]

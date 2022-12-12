@@ -9,9 +9,11 @@ class material(models.Model):
     total_value = models.IntegerField(default=0)
     min_value = models.IntegerField(default=0)
     expire_date = models.DateField(blank=True)
-
+    all_dates = JSONField()
+    
     def __str__(self):
         return self.name
+
 
 class kala(models.Model):
 
@@ -53,7 +55,7 @@ class fcart(models.Model):
     element = models.ForeignKey(material, on_delete=models.CASCADE)
     tedad = models.FloatField(default=0)
     price = models.IntegerField(default=0)
-
+    expire_date = models.DateField()
     def __str__(self):
         return self.element.name
 
