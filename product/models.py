@@ -58,4 +58,3 @@ class fcart(models.Model):
     expire_date = models.DateField()
     def __str__(self):
         return self.element.name
-
