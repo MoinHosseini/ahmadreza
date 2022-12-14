@@ -9,7 +9,7 @@ class materialForm(forms.ModelForm):
     class Meta:
         model = material
         fields = '__all__'
-        exclude = ('total_value','all_dates',)
+        exclude = ('total_value','all_dates','all_values',)
         labels = {
         "name": "نام",
         "current_value_instorage": "مقدار در انبار",

@@ -10,6 +10,7 @@ class material(models.Model):
     min_value = models.IntegerField(default=0)
     expire_date = models.DateField(blank=True)
     all_dates = JSONField()
+    all_values = JSONField()
     
     def __str__(self):
         return self.name

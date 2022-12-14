@@ -48,7 +48,12 @@ class add(View):
             # t = len(form.instance.all_dates)
             a = {}
             a[0] = form.cleaned_data["expire_date"]
-            form.instance.all_dates = a 
+            form.instance.all_dates = a             
+            b = {}
+            b[0] = form.cleaned_data["current_value_instorage"]
+            form.instance.all_values = b 
+
+            
             form.save()
             return render(request,"homepage.html")
 
@@ -228,8 +233,9 @@ def factor(request,type):
                     obj.total_value = obj.current_price * obj.current_value_instorage
                     
                     
-                    t = len(obj.all_dates)
+                    t = int(max((obj.all_dates.keys())))
                     obj.all_dates[t+1] = item["expire_date"]
+                    obj.all_values[t+1] = item["tedad"]
 
                     
                     if (cp != int(item["price"]) ):
@@ -265,12 +271,23 @@ def factor(request,type):
                     ld[  obj.name   ] = "Price : " + str(item["price"]) + " Tedad : " + str(item["tedad"])
                     obj.current_value_instorage -= item["tedad"]
                     obj.total_value = obj.current_price * obj.current_value_instorage
+
+                    dada = (item["expire_date"]).strftime("%y-%m-%d")
+                    
+                    for k,v in obj.all_dates.items():
+                        if dada in v:
+                            obj.all_values[k] -= item["tedad"]
+                            if obj.all_values[k] <=0 :
+                                obj.all_dates.pop(k)
+                                obj.all_values.pop(k)
+                            break
+
                     obj.save()
                 form.instance.content = ld
                 form.instance.active_user =  request.user
                 form.instance.fact_type = "خروج"
                 form.save()
-                fcart.objects.all().delete()
+                # fcart.objects.all().delete()
                 return render(request,"homepage.html")
     elif request.method == "GET":
         form = factorForm()
@@ -343,6 +360,7 @@ def notif(request,type):
 def editdate(request,item):
     if request.method == "GET":
         selected = material.objects.get(name = item)
+        msg=""
         if len(selected.all_dates) == 0:
             msg = "خطایی رخ داده است.. این کالا دارای تاریخ انقضای دیگری نیست ."
         return render(request,'delete.html',{"msg":msg})
